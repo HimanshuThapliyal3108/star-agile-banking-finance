@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: star-banking-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: star-banking
+  template:
+    metadata:
+      labels:
+        app: star-banking
+    spec:
+      containers:
+      - name: star-banking-container
+        image: himanshutha/star-banking-app:latest
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: star-banking-service
+spec:
+  selector:
+    app: star-banking
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
