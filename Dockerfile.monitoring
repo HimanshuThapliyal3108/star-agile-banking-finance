@@ -1,0 +1,25 @@
+FROM openjdk:11-jdk-slim as builder
+
+WORKDIR /app
+
+COPY . .
+
+# Download actuator & micrometer JARs manually
+RUN mkdir -p ./libs && \
+    curl -L -o ./libs/actuator.jar https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-actuator/2.7.4/spring-boot-starter-actuator-2.7.4.jar && \
+    curl -L -o ./libs/micrometer.jar https://repo1.maven.org/maven2/io/micrometer/micrometer-registry-prometheus/1.9.3/micrometer-registry-prometheus-1.9.3.jar && \
+    ./mvnw clean package -DskipTests
+
+FROM openjdk:11-jre-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "app.jar", \
+  "--spring.config.additional-location=file:/app/application.properties", \
+  "--management.endpoints.web.exposure.include=*", \
+  "--management.endpoint.prometheus.enabled=true", \
+  "--management.metrics.export.prometheus.enabled=true"]
