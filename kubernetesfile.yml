@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: star-banking-container
-        image: himanshutha/star-banking-app:latest
+        image: himanshutha/myimage:latest
         ports:
         - containerPort: 8080
 
