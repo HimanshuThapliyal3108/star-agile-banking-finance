@@ -12,7 +12,7 @@ data:
     scrape_configs:
       - job_name: 'springboot-app'
         static_configs:
-          - targets: ['host.docker.internal:30081']
+          - targets: ['172.31.93.43:30081']  # <-- Your EC2 private IP here
 
 ---
 apiVersion: apps/v1
