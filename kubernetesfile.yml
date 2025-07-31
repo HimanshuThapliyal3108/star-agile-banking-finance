@@ -32,4 +32,4 @@ spec:
     - protocol: TCP
       port: 80         # external port
       targetPort: 8081 # internal container port
-      nodePort: 30081  # exposed on EC2 node
+      nodePort: 30091  # exposed on EC2 node
